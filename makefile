@@ -3,7 +3,7 @@
 # Aula de LP1 2018.2
 # 20/09/2018
 # Clonagem atual para teste :
-# 				git clone https://github.com/gdiael/LP01_006_Empresa.git
+# 				git clone https://github.com/gdiael/LP01_005_JogoDadosII.git
 #
 # Gdiael Souto Barros
 #
@@ -15,16 +15,17 @@ SRC = ./src
 BIN = ./bin
 INC = ./include
 
-F01 = funcionario
-F02 = empresa
-F03 = main
+F01 = dado
+F02 = jogador
+F03 = jogo
+F04 = main
 
-PROG1 = $(BIN)/Empresa
+PROG1 = $(BIN)/Jogodado
 
 CPPFLAGS = -Wall -pedantic -std=c++11 -I$(INC)
 
-OBJ1 = $(OBJ)/$(F01).o $(OBJ)/$(F02).o $(OBJ)/$(F03).o
-OBJ2 = $(SRC)/$(F01).cpp $(SRC)/$(F02).cpp $(SRC)/$(F03).cpp
+OBJ1 = $(OBJ)/$(F01).o $(OBJ)/$(F02).o $(OBJ)/$(F03).o $(OBJ)/$(F04).o
+OBJDB = $(SRC)/$(F01).cpp $(SRC)/$(F02).cpp $(SRC)/$(F03).cpp $(SRC)/$(F04).cpp
 
 all: mkdirs $(PROG1)
 
@@ -35,7 +36,7 @@ mkdirs:
 $(PROG1): $(OBJ1)
 	$(CC) $(CPPFLAGS) -o $(PROG1) $(OBJ1)
 
-db$(PROG1): $(OBJ2)
+db$(PROG1): $(OBJDB)
 	$(CC) -g $(CPPFLAGS) -o $(PROG1) $(OBJ2)
 
 $(OBJ)/$(F01).o: $(SRC)/$(F01).cpp $(INC)/$(F01).h
@@ -44,8 +45,11 @@ $(OBJ)/$(F01).o: $(SRC)/$(F01).cpp $(INC)/$(F01).h
 $(OBJ)/$(F02).o: $(SRC)/$(F02).cpp $(INC)/$(F02).h $(INC)/$(F01).h
 	$(CC) $(CPPFLAGS) -c $(SRC)/$(F02).cpp -o $(OBJ)/$(F02).o
 
-$(OBJ)/$(F03).o: $(SRC)/$(F03).cpp $(INC)/$(F01).h $(INC)/$(F02).h
+$(OBJ)/$(F03).o: $(SRC)/$(F03).cpp $(INC)/$(F01).h $(INC)/$(F02).h  $(INC)/$(F03).h
 	$(CC) $(CPPFLAGS) -c $(SRC)/$(F03).cpp -o $(OBJ)/$(F03).o
+
+$(OBJ)/$(F04).o: $(SRC)/$(F04).cpp $(INC)/$(F01).h $(INC)/$(F02).h  $(INC)/$(F03).h
+	$(CC) $(CPPFLAGS) -c $(SRC)/$(F04).cpp -o $(OBJ)/$(F04).o
 
 clean: 
 	rm -f $(BIN)/*
@@ -60,7 +64,11 @@ run: all
 # propriedades para serem usadas no windows com o MinGW com gcc e gdb
 # não usar o comando Make e sim o executável: mingw32-make.exe
 
-runwin: $(PROG1)
+mkdirswin:
+	mkdir bin
+	mkdir build
+
+runwin: mkdirswin $(PROG1)
 	chcp 65001
 	$(PROG1)
 

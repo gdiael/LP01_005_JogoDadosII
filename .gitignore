@@ -1,5 +1,6 @@
-bin/Empresa
 build/main.o
-build/funcionario.o
-build/empresa.o
-bin/Empresa.exe
+build/dado.o
+build/jogador.o
+build/jogo.o
+bin/Jogodado
+bin/Jogodado.exe

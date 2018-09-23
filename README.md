@@ -1,2 +1,2 @@
 # LP01_005_JogoDadosII
-Primeira questão do trabalho da primeira unidade
+Segunda questão do trabalho da primeira unidade
