@@ -37,7 +37,7 @@ $(PROG1): $(OBJ1)
 	$(CC) $(CPPFLAGS) -o $(PROG1) $(OBJ1)
 
 db$(PROG1): $(OBJDB)
-	$(CC) -g $(CPPFLAGS) -o $(PROG1) $(OBJ2)
+	$(CC) -g $(CPPFLAGS) -o $(PROG1) $(OBJDB)
 
 $(OBJ)/$(F01).o: $(SRC)/$(F01).cpp $(INC)/$(F01).h
 	$(CC) $(CPPFLAGS) -c $(SRC)/$(F01).cpp -o $(OBJ)/$(F01).o
@@ -65,8 +65,8 @@ run: all
 # não usar o comando Make e sim o executável: mingw32-make.exe
 
 mkdirswin:
-	mkdir bin
-	mkdir build
+	if not exist bin mkdir bin
+	if not exist build mkdir build
 
 runwin: mkdirswin $(PROG1)
 	chcp 65001

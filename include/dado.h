@@ -5,18 +5,21 @@
 
 class Dado
 {
-private:
+  private:
     // valor do dado após jogada
     int m_valor;
+    // numero de lados do dado
+    int m_lados;
     // atributos para geração de números randômicos
     std::random_device rd;
     std::default_random_engine gen;
     std::uniform_int_distribution<int> dis;
-public:
+
+  public:
     // contrutor do jogador
-    Dado();
+    Dado(int lados);
     // método para atualizar o valor
-    void jogar();
+    int jogar();
     // retorna m_valor
     int getValor();
 };

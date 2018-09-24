@@ -1,8 +1,6 @@
 #include "jogador.h"
-#include <iostream>
-#include <string>
 
-Jogador::Jogador(std::string nome): m_nome(nome), m_pontuacao(0), m_pontuacaoTotal(0), m_isAtivo(true)
+Jogador::Jogador(std::string nome): m_nome(nome), m_pontuacao(0), m_rodadasVencidas(0), m_isAtivo(true)
 {}
     
 std::string Jogador::getNome()
@@ -15,9 +13,14 @@ int Jogador::getPontuacao()
     return m_pontuacao;
 }
 
-int Jogador::getPontuacaoTotal()
+int Jogador::getRodadasVencidas()
 {
-    return m_pontuacaoTotal;
+    return m_rodadasVencidas;
+}
+
+void Jogador::incrementaRodadas()
+{
+    m_rodadasVencidas++;
 }
 
 void Jogador::resetPontuacao()
@@ -40,23 +43,71 @@ void Jogador::desativar()
     m_isAtivo = false;
 }
 
-void Jogador::jogar(Dado *d1, Dado *d2, Dado *d3)
+void Jogador::jogar(Dado &d1, Dado &d2)
 {
-    // atualize o valor dos dados
-    d1->jogar();
-    d2->jogar();
-    d3->jogar();
     // some os valores deles
-    int res = d1->getValor() + d2->getValor() + d3->getValor();
-    m_pontuacao += res;
-    m_pontuacaoTotal += res;
+    d2.jogar();
+    m_pontuacao += d1.jogar();
+    m_pontuacao += d2.jogar();
+    if(m_pontuacao > goldenPoint){
+        desativar();
+    };
 }
 
-void Jogador::printStatus(){
-    std::string ativo = " | Fora no Jogo!";
+bool Jogador::estaNoJogo()
+{
     if(m_isAtivo){
-        ativo = " | Está no Jogo!";
+        return true;
+    }else{
+        if(m_pontuacao < goldenPoint)
+        {
+            return true;
+        }else{
+            return false;
+        };
     };
-    std::cout << m_nome << " | pontos: " << m_pontuacao << " | total: " << m_pontuacaoTotal;
-    std::cout << ativo << std::endl;
+}
+
+int Jogador::goldenPoint = 21;
+
+bool Jogador::isRightPoint(){
+    return (m_pontuacao == goldenPoint);
+}
+
+void Jogador::askToPlay(Dado &d1, Dado &d2){
+    std::cout << "\nAtenção " << m_nome << ", você está com " << m_pontuacao << " Pontos." << std::endl;
+    bool isOK = false;
+    while(!isOK){
+        std::cout << "Digite [j] para jogar ou [p] para parar: ";
+        std::string prompt;
+        std::getline(std::cin, prompt);
+        if(prompt == "p" || prompt == "P"){
+            desativar();
+            isOK = true;
+        }else if(prompt == "j" || prompt == "J"){
+            jogar(d1, d2);
+            std::cout << m_nome << " Jogou os dados e agora está com " << m_pontuacao << " pontos." << std::endl;
+            isOK = true;
+        }else{
+            std::cerr << "Opção inválida! ";
+        };
+    };
+     
+}
+
+std::istream& operator>> (std::istream &is, Jogador &jog)
+{
+    std::string nome;
+    std::cout << "Qual o nome do novo jogador: ";
+    std::getline(is, nome);
+    jog.m_nome = nome;
+    return is;
+}
+
+std::ostream& operator<< (std::ostream& os, Jogador &jog)
+{
+    std::string ativo = (jog.estaNoJogo()? (jog.getIsAtivo() ? " | Jogando!" : " | Parou!" ) : " | Excluiu!");
+    os << std::setw(18) << std::left << jog.m_nome << " | pontos:" << std::setw(3) << std::right  <<  jog.m_pontuacao;
+    os << " | rodadas vencidas: " << jog.m_rodadasVencidas << ativo << std::endl;;
+    return os;
 }

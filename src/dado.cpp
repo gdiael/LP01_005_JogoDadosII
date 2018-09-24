@@ -1,11 +1,11 @@
 #include "dado.h"
 
-Dado::Dado(): rd(), gen(rd()), dis(1, 6)
-{}
+Dado::Dado(int lados) : m_lados(lados), rd(), gen(rd()), dis(1, lados) {}
 
-void Dado::jogar()
+int Dado::jogar()
 {
     m_valor = std::round(dis(gen));
+    return m_valor;
 }
 
 int Dado::getValor()

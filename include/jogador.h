@@ -3,23 +3,28 @@
 
 #include "dado.h"
 #include <string>
+#include <iostream>
+#include <iomanip>
 
 class Jogador
 {
-private:
+  private:
     std::string m_nome;
     int m_pontuacao;
-    int m_pontuacaoTotal;
+    int m_rodadasVencidas;
     bool m_isAtivo;
-public:
+
+  public:
     // Consturtor Parametrizado
     Jogador(std::string nome);
     // Retorna m_nome
     std::string getNome();
     // Retorna m_pontuacao
     int getPontuacao();
-    // Retorna m_pontuacaoTotal
-    int getPontuacaoTotal();
+    // Retorna m_rodadasVencidas
+    int getRodadasVencidas();
+    // incrementa as rodadas vencidas
+    void incrementaRodadas();
     // Zera o valor de m_pontuacao
     void resetPontuacao();
     // Retorna m_isAtivo
@@ -29,9 +34,19 @@ public:
     // Torna "false" o valor de m_isAtivo
     void desativar();
     // Implementa a jogada onde a pontuação do jogador será atualizada
-    void jogar(Dado *d1, Dado *d2, Dado *d3);
-    // Faz o printe do estado do Jogador
-    void printStatus();
+    void jogar(Dado &d1, Dado &d2);
+    // verifica se o jogador está no jogo ainda
+    bool estaNoJogo();
+    // atributo estatico para guardar a pontuação do jogo
+    static int goldenPoint;
+    // verifica se a pontuação do jogador é exatamente igual a goldenPoint
+    bool isRightPoint();
+    // método para perguntar se o jogador deseja parar ou continuar
+    void askToPlay(Dado &d1, Dado &d2);
+    // sobrecarga do operador de extração
+    friend std::istream& operator>> (std::istream& is, Jogador &jog);
+    // sobrecarga do operador de inserção para imprimir o status do jogador
+    friend std::ostream& operator<< (std::ostream& os, Jogador &jog);
 };
 
 #endif
