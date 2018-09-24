@@ -17,6 +17,8 @@ class Jogador
   public:
     // Consturtor Parametrizado
     Jogador(std::string nome);
+    // atributo estatico para guardar a pontuação do jogo
+    static int goldenPoint;
     // Retorna m_nome
     std::string getNome();
     // Retorna m_pontuacao
@@ -37,8 +39,6 @@ class Jogador
     void jogar(Dado &d1, Dado &d2);
     // verifica se o jogador está no jogo ainda
     bool estaNoJogo();
-    // atributo estatico para guardar a pontuação do jogo
-    static int goldenPoint;
     // verifica se a pontuação do jogador é exatamente igual a goldenPoint
     bool isRightPoint();
     // método para perguntar se o jogador deseja parar ou continuar
